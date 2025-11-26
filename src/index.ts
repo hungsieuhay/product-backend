@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { AppDataSource } from './config/database';
 import { errorHandler, notFoundHandler } from './middleware/error';
-import authRouter from './router/authRoutes';
+import apiRouter from './router';
 dotenv.config();
 
 const app = express();
@@ -31,7 +31,7 @@ app.get('/api/hello', (req: Request, res: Response) => {
 });
 
 // Routes
-app.use('/api/auth', authRouter);
+app.use('/api', apiRouter);
 
 // Error handling middleware
 app.use(notFoundHandler);

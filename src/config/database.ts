@@ -1,18 +1,20 @@
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import { User } from '../entities/user.entity';
+import { Category } from '../entities/category.entity';
+import { Product } from '../entities/product.entity';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || '3306'),
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  username: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',
+  database: process.env.DB_NAME || 'productmarket',
   synchronize: process.env.NODE_ENV !== 'production',
   logging: process.env.NODE_ENV === 'development',
-  entities: [User],
+  entities: [User, Category, Product],
   migrations: ['src/migrations/**/*.ts'],
   subscribers: ['src/subscribers/**/*.ts'],
   charset: 'utf8mb4',
