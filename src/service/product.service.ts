@@ -4,22 +4,45 @@ import { Category } from '../entities/category.entity';
 import { Product } from '../entities/product.entity';
 import { AppError } from '../middleware/error';
 import { ApiResponse } from '../types';
-import { CreateProductRequest, UpdateProductRequest } from '../schema/product.schema';
+import {
+  CreateProductRequest,
+  UpdateProductRequest,
+  ProductRequest,
+} from '../schema/product.schema';
 import { faker } from '@faker-js/faker';
+
+interface ProductResponse {
+  items: Product[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
 
 export class ProductService {
   private static productRespository = AppDataSource.getRepository(Product);
   private static categoryRespository = AppDataSource.getRepository(Category);
 
-  static async getAllProducts(): Promise<ApiResponse<Product[]>> {
-    const products = await this.productRespository.find({
+  static async getAllProducts(params: ProductRequest): Promise<ApiResponse<ProductResponse>> {
+    const { page, limit } = params;
+    const skip = (page - 1) * limit;
+    const [products, total] = await this.productRespository.findAndCount({
       relations: ['categories'],
+      skip,
+      take: limit,
+      order: { createdAt: 'DESC' },
     });
 
-    const response: ApiResponse<Product[]> = {
+    const response: ApiResponse<ProductResponse> = {
       success: true,
       message: 'Products fetched successfully',
-      data: products,
+      data: {
+        items: products,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
     };
 
     return response;
