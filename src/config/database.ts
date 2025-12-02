@@ -3,6 +3,8 @@ import { DataSource } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { Category } from '../entities/category.entity';
 import { Product } from '../entities/product.entity';
+import { Room } from '../entities/room.entity';
+import { Message } from '../entities/message.entity';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -14,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'productmarket',
   synchronize: process.env.NODE_ENV !== 'production',
   logging: process.env.NODE_ENV === 'development',
-  entities: [User, Category, Product],
+  entities: [User, Category, Product, Room, Message],
   migrations: ['src/migrations/**/*.ts'],
   subscribers: ['src/subscribers/**/*.ts'],
   charset: 'utf8mb4',

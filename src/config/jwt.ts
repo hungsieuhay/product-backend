@@ -5,7 +5,7 @@ dotenv.config();
 
 export class JwtMethod {
   private static accessSecret = process.env.JWT_ACCESS_SECRET!;
-  private static accessExpiresIn = process.env.JWT_ACCESS_EXPIRES_IN;
+  private static accessExpiresIn = process.env.JWT_ACCESS_EXPIRES_IN || '2d';
 
   static generateAccessToken = (payload: Omit<JwtPayload, 'iat' | 'exp'>): string => {
     const options: SignOptions = {
