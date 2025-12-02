@@ -35,7 +35,7 @@ export class AuthController {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json(result.data);
+    res.status(201).json(result);
   }
 
   static async login(req: Request, res: Response): Promise<void> {
@@ -67,7 +67,7 @@ export class AuthController {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json(result.data);
+    res.status(200).json(result);
   }
 
   static async logout(req: Request, res: Response): Promise<void> {
