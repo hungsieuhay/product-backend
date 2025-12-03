@@ -5,6 +5,7 @@ import { User } from '../entities/user.entity';
 import { AppError } from '../middleware/error';
 import { LoginRequest, RegisterRequest } from '../schema/auth.schema';
 import { ApiResponse, AuthResponse, UserResponse } from '../types';
+import { response } from 'express';
 
 export class AuthService {
   private static userRespository = AppDataSource.getRepository(User);

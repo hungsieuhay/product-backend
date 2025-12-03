@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import { registerSchema, loginSchema } from '../schema/auth.schema';
-import { AuthService } from '../service/auth.service';
 import { AuthenticateRequest } from '../middleware/auth';
-import { ApiResponse, UserResponse } from '../types';
 import { AppError } from '../middleware/error';
+import { loginSchema, registerSchema } from '../schema/auth.schema';
+import { AuthService } from '../service/auth.service';
 
 export class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
@@ -32,7 +31,7 @@ export class AuthController {
       httpOnly: true,
       secure: isProduction,
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(201).json(result);
@@ -64,7 +63,7 @@ export class AuthController {
       httpOnly: true,
       secure: isProduction,
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json(result);
@@ -86,12 +85,6 @@ export class AuthController {
 
     const result = await AuthService.getCurrentUser(userId);
 
-    const response: ApiResponse<UserResponse> = {
-      success: true,
-      message: 'User fetched successfully',
-      data: result.data,
-    };
-
-    res.status(200).json(response);
+    res.status(200).json(result);
   }
 }
